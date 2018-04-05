@@ -1,6 +1,9 @@
-package com.loudwords.aires_oliveira.loudwords;
+package com.loudwords.aires_oliveira.loudwords.activities;
 
 import android.annotation.SuppressLint;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +11,9 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+
+import com.loudwords.aires_oliveira.loudwords.R;
+import com.loudwords.aires_oliveira.loudwords.fragments.PlayersNumberFragment;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -62,6 +68,22 @@ public class MainActivity extends AppCompatActivity {
 
         playButton = findViewById(R.id.play_button);
 
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                Fragment restaurantListFragment = fragmentManager.findFragmentByTag("playersNumberFragment");
+                if (restaurantListFragment == null) {
+                    Fragment newPlayersNumberFragment = new PlayersNumberFragment();
+                    FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
+                    fragTransaction.add(R.id.fullscreen_content, newPlayersNumberFragment, "playersNumberFragment");
+                    fragTransaction.addToBackStack("playersNumberFragment");
+                    fragTransaction.commit();
+                } else {
+                    fragmentManager.popBackStack("playersNumberFragment", 0);
+                }
+            }
+        });
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
